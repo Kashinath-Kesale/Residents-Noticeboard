@@ -2,15 +2,26 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// Corrected import paths
 import { AnnouncementController } from './announcement/announcement.controller';
 import { AnnouncementService } from './announcement/announcement.service';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  imports: [],
-  // Add the controller here
+  imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 60,
+    }]),
+  ],
   controllers: [AppController, AnnouncementController],
-  // Add the service here
-  providers: [AppService, AnnouncementService],
+  providers: [
+    AppService,
+    AnnouncementService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
