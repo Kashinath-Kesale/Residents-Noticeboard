@@ -17,7 +17,7 @@ interface Announcement {
   lastActivityAt: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || '/api/announcements';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/announcements';
 
 export default function AnnouncementPage() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
